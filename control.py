@@ -33,7 +33,7 @@ def arm_and_takeoff(aTargetAltitude):
     while True:
         print(f" Altitude: {vehicle.location.global_relative_frame.alt}")
         #Break and return from function just below target altitude.
-        if vehicle.location.global_relative_frame.alt >= aTargetAltitude*0.95:
+        if vehicle.location.global_relative_frame.alt >= aTargetAltitude*0.99:
             print("Reached target altitude")
             break
         time.sleep(1)
@@ -59,15 +59,20 @@ def go_to_point(lat, long, alt):
         currentLong = vehicle.location.global_frame.lon
         currentAlt = vehicle.location.global_frame.alt
         if (
-            (currentAlt > 0.95 * alt and currentAlt < 1.05 * alt) and
-            (currentLat > 0.95 * lat and currentLat < 1.05 * lat) and
-            (currentLong > 0.95 * long and currentLong < 1.05 * long)
+            (currentAlt >= 0.99 * alt and currentAlt <= 1.01 * alt) and
+            (currentLat >= 0.99 * lat and currentLat <= 1.01 * lat) and
+            (abs(currentLong) >= abs(0.99 * long) and abs(currentLong) <= abs(1.01 * long))
         ):
             return
         else:
-            print(f"x_min: {0.95 * alt} - x: {currentAlt} - x_max: {1.05 * alt}")
-            print(f"x_min: {0.95 * lat} - x: {currentLat} - x_max: {1.05 * lat}")
-            print(f"x_min: {0.95 * long} - x: {currentLong} - x_max: {1.05 * long}")
+            print("=======================")
+            print(
+                f"Alt(min: {alt * 0.99}, current: {currentAlt}, max: {alt * 1.01}) : {currentAlt >= 0.99 * alt and currentAlt <= 1.01 * alt}")
+            print(
+                f"Lat(min: {lat * 0.99}, current: {currentLat}, max: {lat * 1.01}) : {currentLat >= 0.99 * lat and currentLat <= 1.01 * lat}")
+            print(
+                f"Lng(min: {long * 0.99}, current: {currentLong}, max: {long * 1.01}) : {abs(currentLong) >= abs(0.99 * long) and abs(currentLong) <= abs(1.01 * long)}")
+            print("=======================")
 
             # distance_to_point(lat, long, vehicle.location.global_frame.lat, vehicle.location.global_frame.lon)
             time.sleep(2)
