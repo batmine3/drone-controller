@@ -1,4 +1,3 @@
-import dis
 from dronekit import connect, VehicleMode, LocationGlobal
 import time, json
 from math import sin, cos, sqrt, atan2, radians
@@ -66,7 +65,11 @@ def go_to_point(lat, long, alt):
         ):
             return
         else:
-            distance_to_point(lat, long, vehicle.location.global_frame.lat, vehicle.location.global_frame.lon)
+            print(f"x_min: {0.95 * alt} - x: {currentAlt} - x_max: {1.05 * alt}")
+            print(f"x_min: {0.95 * lat} - x: {currentLat} - x_max: {1.05 * lat}")
+            print(f"x_min: {0.95 * long} - x: {currentLong} - x_max: {1.05 * long}")
+
+            # distance_to_point(lat, long, vehicle.location.global_frame.lat, vehicle.location.global_frame.lon)
             time.sleep(2)
 
 def reset_battery(lat, long):
