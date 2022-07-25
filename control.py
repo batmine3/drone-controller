@@ -1,3 +1,4 @@
+from random import randint
 from dronekit import connect, VehicleMode, LocationGlobal
 import time, json
 from math import sin, cos, sqrt, atan2, radians
@@ -33,7 +34,7 @@ def arm_and_takeoff(aTargetAltitude):
     while True:
         print(f" Altitude: {vehicle.location.global_relative_frame.alt}")
         #Break and return from function just below target altitude.
-        if vehicle.location.global_relative_frame.alt >= aTargetAltitude*0.99:
+        if vehicle.location.global_relative_frame.alt >= aTargetAltitude * 0.99:
             print("Reached target altitude")
             break
         time.sleep(1)
@@ -62,27 +63,44 @@ def go_to_point(lat, long, alt):
             (currentAlt >= 0.99 * alt and currentAlt <= 1.01 * alt) and
             (currentLat >= 0.99 * lat and currentLat <= 1.01 * lat) and
             (abs(currentLong) >= abs(0.99 * long) and abs(currentLong) <= abs(1.01 * long))
-        ):
+        ) or (vehicle.armed == False):
             return
         else:
-            print("=======================")
-            print(
-                f"Alt(min: {alt * 0.99}, current: {currentAlt}, max: {alt * 1.01}) : {currentAlt >= 0.99 * alt and currentAlt <= 1.01 * alt}")
-            print(
-                f"Lat(min: {lat * 0.99}, current: {currentLat}, max: {lat * 1.01}) : {currentLat >= 0.99 * lat and currentLat <= 1.01 * lat}")
-            print(
-                f"Lng(min: {long * 0.99}, current: {currentLong}, max: {long * 1.01}) : {abs(currentLong) >= abs(0.99 * long) and abs(currentLong) <= abs(1.01 * long)}")
-            print("=======================")
+            # print("=======================")
+            # print(
+            #     f"Alt(min: {alt * 0.99}, current: {currentAlt}, max: {alt * 1.01}) : {currentAlt >= 0.99 * alt and currentAlt <= 1.01 * alt}")
+            # print(
+            #     f"Lat(min: {lat * 0.99}, current: {currentLat}, max: {lat * 1.01}) : {currentLat >= 0.99 * lat and currentLat <= 1.01 * lat}")
+            # print(
+            #     f"Lng(min: {long * 0.99}, current: {currentLong}, max: {long * 1.01}) : {abs(currentLong) >= abs(0.99 * long) and abs(currentLong) <= abs(1.01 * long)}")
+            # print("=======================")
 
-            # distance_to_point(lat, long, vehicle.location.global_frame.lat, vehicle.location.global_frame.lon)
+            distance_to_point(lat, long, vehicle.location.global_frame.lat, vehicle.location.global_frame.lon)
             time.sleep(2)
 
 def reset_battery(lat, long):
-    print("On se pose")
+    print("\nOn se pose")
     go_to_point(lat, long, 0)
-    print("On change de batterie")
-    vehicle.battery.level = 100
-    print("On redécolle")
+    print("=== Evenements ===")
+    reportEvent()
+    print("=== Fin Evenements ===")
+    print("\nOn change de batterie")
+    arm_and_takeoff(60)
+    print("\nOn redécolle")
+
+def reportEvent():
+    events = [
+        "Un malandrin a été surpris en train de voler la casquette d'une vieille dame.",
+        "Bizarre, des hommes ont été aperçu en train de décharger de la farine colombienne.",
+        "Un homme a volé la pelle d'un enfant. Que fait-on ? Rien c'est la vie et elle est dure !",
+        "Intriguant, des crabes ont lancé une partie de poker contre les mouettes.",
+        "Suprenant, le bus des Girondins de Bordeaux a été aperçu au font de l'eau, pas étonnant que le club coule !",
+        "Il y a gavé monde sur la plage, flemme de surveiller.",
+        "Un leviator sauvage apparait, que faire ??"
+    ]
+    for i in range (2):
+        print(events[randint(0, 6)])
+
 
 vehicle = connect("127.0.0.1:14550", wait_ready=True)
 
