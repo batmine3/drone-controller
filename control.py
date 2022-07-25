@@ -1,3 +1,9 @@
+# Sujet: Réalisation d’un parcours de surveillances par drone, entre l’embarcadère de Royan et le phare de Royan.
+# Développeurs: Peter BALIVET & Baptiste DEMARCHE
+# Classe: ESGI-4SI2
+# Date: 25/07/2022
+
+
 from random import randint
 from dronekit import connect, VehicleMode, LocationGlobal
 import time, json
